@@ -24,10 +24,6 @@ export default function FormGroup() {
     defaultValues: { phone: '' },
   })
 
-  function handleFormSubmit(data: RegisterData) {
-    console.log(data)
-  }
-
   // input mask do input de phone
   const phoneValue = watch('phone')
   useEffect(() => {
@@ -37,7 +33,7 @@ export default function FormGroup() {
   return (
     <form
       className="flex w-full flex-col"
-      onSubmit={handleSubmit(handleFormSubmit)}
+      // onSubmit={handleSubmit(handleRegisterNewContact)}
       noValidate
     >
       <div className="mb-6 flex flex-col gap-4">

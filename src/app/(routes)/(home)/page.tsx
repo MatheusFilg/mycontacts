@@ -2,15 +2,22 @@
 
 import { MoveDown, MoveUp } from 'lucide-react'
 import ContactCard from '../../components/ContactCard'
-import { UUID } from 'crypto'
+
 import { ChangeEvent, useEffect, useState } from 'react'
 
 export interface IContacts {
-  id: UUID
+  id: string
   name: string
   email: string
   phone: string
   category_name: string
+}
+
+interface CreateContactProps {
+  name: string
+  email: string
+  phone: string
+  category: 'instagram' | 'whatsapp' | 'linkedin'
 }
 
 export default function Home() {
@@ -29,6 +36,29 @@ export default function Home() {
       })
   }, [orderBy])
 
+  async function handleRegisterNewContact(data: CreateContactProps) {
+    const { name, phone, email, category } = data
+
+    if (name && phone && email && category) {
+      fetch('http://localhost:3001/contacts', {
+        method: 'POST',
+        body: JSON.stringify({
+          name,
+          email,
+          phone,
+          category,
+        }),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setContacts([...contacts, data])
+        })
+    }
+  }
+
   function handleOrderContacts() {
     setOrderBy((orderBy) => (orderBy === 'asc' ? 'desc' : 'asc'))
   }
@@ -41,6 +71,16 @@ export default function Home() {
     name.includes(searchTerm),
   )
 
+  const handleDeleteContact = (id: unknown) => {
+    fetch(`http://localhost:3001/contacts/${id}`, {
+      method: 'DELETE',
+    }).then(() => {
+      setContacts((contacts) => {
+        return contacts.filter((item) => item.id !== id)
+      })
+    })
+  }
+
   return (
     <div className="flex w-[500px] flex-col items-center">
       <input
@@ -52,7 +92,8 @@ export default function Home() {
       />
       <div className="mb-4 flex w-full flex-row items-center justify-between">
         <h1 className="text-2xl font-bold text-zinc-950">
-          {contacts.length} Contatos
+          {filteredContacts.length}{' '}
+          {filteredContacts.length === 1 ? 'Contato' : 'Contatos'}
         </h1>
         <a href="/register" className="mt-1.5 outline-none">
           <button className="rounded border-2 border-primary-500 bg-transparent p-3 px-4 py-2 text-base font-bold text-primary-500 shadow-md outline-none focus-visible:shadow-md focus-visible:shadow-primary-500">
@@ -70,13 +111,17 @@ export default function Home() {
         >
           Nome
           <span>
-            {orderBy === 'asc' ? <MoveDown size={20} /> : <MoveUp size={20} />}
+            {orderBy === 'asc' ? <MoveUp size={20} /> : <MoveDown size={20} />}
           </span>
         </button>
 
         <div className="flex w-full flex-col gap-4">
           {filteredContacts.map((contact) => (
-            <ContactCard key={contact.id} contact={contact} />
+            <ContactCard
+              contact={contact}
+              key={contact.id}
+              deleteContact={() => handleDeleteContact(contact.id)}
+            />
           ))}
         </div>
       </div>

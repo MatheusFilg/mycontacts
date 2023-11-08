@@ -7,9 +7,10 @@ import { IContacts } from '../(routes)/(home)/page'
 
 interface ContactProps {
   contact: IContacts
+  deleteContact: (id: unknown) => void
 }
 
-export default function ContactCard({ contact }: ContactProps) {
+export default function ContactCard({ contact, deleteContact }: ContactProps) {
   return (
     <div className="flex flex-row justify-between rounded bg-white p-4 shadow-md">
       <div className="flex flex-col gap-1">
@@ -40,7 +41,7 @@ export default function ContactCard({ contact }: ContactProps) {
               <Trash className="text-red-400" />
             </button>
           </AlertDialog.Trigger>
-          <Modal />
+          <Modal deleteContact={deleteContact} contactName={contact.name} />
         </AlertDialog.Root>
       </div>
     </div>
