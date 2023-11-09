@@ -8,8 +8,17 @@ import { Input } from './Input'
 import { RegisterData, RegisterValidationSchema } from '../utils/schema'
 import { formatPhone } from '../utils/formatPhone'
 import { useEffect } from 'react'
+import { useContextSelector } from 'use-context-selector'
+import { ContactsContext } from '../context/ContactsContext'
 
 export default function FormGroup() {
+  const handleRegisterNewContact = useContextSelector(
+    ContactsContext,
+    (context) => {
+      return context.handleRegisterNewContact
+    },
+  )
+
   const {
     register,
     control,
@@ -33,7 +42,7 @@ export default function FormGroup() {
   return (
     <form
       className="flex w-full flex-col"
-      // onSubmit={handleSubmit(handleRegisterNewContact)}
+      onSubmit={handleSubmit(handleRegisterNewContact)}
       noValidate
     >
       <div className="mb-6 flex flex-col gap-4">

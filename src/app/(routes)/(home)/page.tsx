@@ -3,7 +3,9 @@
 import { MoveDown, MoveUp } from 'lucide-react'
 import ContactCard from '../../components/ContactCard'
 
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent } from 'react'
+import { useContextSelector } from 'use-context-selector'
+import { ContactsContext } from '@/app/context/ContactsContext'
 
 export interface IContacts {
   id: string
@@ -13,72 +15,33 @@ export interface IContacts {
   category_name: string
 }
 
-interface CreateContactProps {
-  name: string
-  email: string
-  phone: string
-  category: 'instagram' | 'whatsapp' | 'linkedin'
-}
-
 export default function Home() {
-  const [contacts, setContacts] = useState<IContacts[]>([])
-  const [orderBy, setOrderBy] = useState('asc')
-  const [searchTerm, setSearchTerm] = useState('')
+  const filteredContacts = useContextSelector(ContactsContext, (context) => {
+    return context.filteredContacts
+  })
 
-  useEffect(() => {
-    fetch(`http://localhost:3001/contacts?orderBy=${orderBy}`)
-      .then(async (response) => {
-        const json = await response.json()
-        setContacts(json)
-      })
-      .catch((error) => {
-        console.log('erro', error)
-      })
-  }, [orderBy])
+  const handleOrderContacts = useContextSelector(ContactsContext, (context) => {
+    return context.handleOrderContacts
+  })
 
-  async function handleRegisterNewContact(data: CreateContactProps) {
-    const { name, phone, email, category } = data
+  const orderBy = useContextSelector(ContactsContext, (context) => {
+    return context.orderBy
+  })
 
-    if (name && phone && email && category) {
-      fetch('http://localhost:3001/contacts', {
-        method: 'POST',
-        body: JSON.stringify({
-          name,
-          email,
-          phone,
-          category,
-        }),
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          setContacts([...contacts, data])
-        })
-    }
-  }
+  const handleDeleteContact = useContextSelector(ContactsContext, (context) => {
+    return context.handleDeleteContact
+  })
 
-  function handleOrderContacts() {
-    setOrderBy((orderBy) => (orderBy === 'asc' ? 'desc' : 'asc'))
-  }
+  const setSearchTerm = useContextSelector(ContactsContext, (context) => {
+    return context.setSearchTerm
+  })
+
+  const searchTerm = useContextSelector(ContactsContext, (context) => {
+    return context.searchTerm
+  })
 
   function handleSearchContact(event: ChangeEvent<HTMLInputElement>) {
     setSearchTerm(event.target.value)
-  }
-
-  const filteredContacts = contacts.filter(({ name }) =>
-    name.includes(searchTerm),
-  )
-
-  const handleDeleteContact = (id: unknown) => {
-    fetch(`http://localhost:3001/contacts/${id}`, {
-      method: 'DELETE',
-    }).then(() => {
-      setContacts((contacts) => {
-        return contacts.filter((item) => item.id !== id)
-      })
-    })
   }
 
   return (
