@@ -11,7 +11,7 @@ import { useEffect } from 'react'
 import { useContextSelector } from 'use-context-selector'
 import { ContactsContext } from '../context/ContactsContext'
 
-export default function FormGroup() {
+export default function RegisterForm() {
   const handleRegisterNewContact = useContextSelector(
     ContactsContext,
     (context) => {

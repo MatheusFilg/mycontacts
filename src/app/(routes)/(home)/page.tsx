@@ -7,14 +7,6 @@ import { ChangeEvent } from 'react'
 import { useContextSelector } from 'use-context-selector'
 import { ContactsContext } from '@/app/context/ContactsContext'
 
-export interface IContacts {
-  id: string
-  name: string
-  email: string
-  phone: string
-  category_name: string
-}
-
 export default function Home() {
   const filteredContacts = useContextSelector(ContactsContext, (context) => {
     return context.filteredContacts

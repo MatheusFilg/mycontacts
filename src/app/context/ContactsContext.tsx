@@ -1,18 +1,25 @@
 'use client'
 
-import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react'
+import {
+  ChangeEvent,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react'
 
 import { createContext } from 'use-context-selector'
 
-interface Contact {
+export interface IContact {
   id: string
   name: string
   email: string
   phone: string
-  category_name: 'instagram' | 'whatsapp' | 'linkedin'
+  category_name: string
 }
 
-interface CreateContactProps {
+export interface CreateContactProps {
   name: string
   email: string
   phone: string
@@ -20,14 +27,15 @@ interface CreateContactProps {
 }
 
 interface ContactContextType {
-  contacts: Contact[]
+  contacts: IContact[]
   orderBy: string
   handleOrderContacts: () => void
   handleDeleteContact: (id: unknown) => void
   setSearchTerm: Dispatch<SetStateAction<string>>
-  filteredContacts: Contact[]
+  filteredContacts: IContact[]
   searchTerm: string
   handleRegisterNewContact: (data: CreateContactProps) => Promise<void>
+  // handleInput: (event: ChangeEvent<HTMLInputElement>) => void
 }
 
 interface ContactsProvideProps {
@@ -37,7 +45,7 @@ interface ContactsProvideProps {
 export const ContactsContext = createContext({} as ContactContextType)
 
 export function ContactsProvider({ children }: ContactsProvideProps) {
-  const [contacts, setContacts] = useState<Contact[]>([])
+  const [contacts, setContacts] = useState<IContact[]>([])
   const [orderBy, setOrderBy] = useState('asc')
   const [searchTerm, setSearchTerm] = useState('')
 
@@ -75,10 +83,6 @@ export function ContactsProvider({ children }: ContactsProvideProps) {
     window.location.href = 'http://localhost:3000/'
   }
 
-  function handleOrderContacts() {
-    setOrderBy((orderBy) => (orderBy === 'asc' ? 'desc' : 'asc'))
-  }
-
   function handleDeleteContact(id: unknown) {
     fetch(`http://localhost:3001/contacts/${id}`, {
       method: 'DELETE',
@@ -89,9 +93,20 @@ export function ContactsProvider({ children }: ContactsProvideProps) {
     })
   }
 
+  function handleOrderContacts() {
+    setOrderBy((orderBy) => (orderBy === 'asc' ? 'desc' : 'asc'))
+  }
+
   const filteredContacts = contacts.filter(
     ({ name }) => name?.includes(searchTerm),
   )
+
+  // const handleInput = (event: ChangeEvent<HTMLInputElement>) => {
+  //   setContacts({
+  //     ...contacts,
+  //     [event.target.name]: event.target.value,
+  //   })
+  // }
 
   return (
     <ContactsContext.Provider
@@ -104,6 +119,7 @@ export function ContactsProvider({ children }: ContactsProvideProps) {
         filteredContacts,
         searchTerm,
         handleRegisterNewContact,
+        // handleInput,
       }}
     >
       {children}

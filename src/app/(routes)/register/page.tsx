@@ -1,5 +1,5 @@
 import { ArrowLeft } from 'lucide-react'
-import FormGroup from '../../components/FormGroup'
+import RegisterForm from '../../components/RegisterForm'
 import Skeleton from 'react-loading-skeleton'
 
 const loading = false
@@ -34,7 +34,7 @@ export default function Register() {
 
           <h1 className="mb-6 text-2xl font-bold">Novo Contato</h1>
 
-          <FormGroup />
+          <RegisterForm />
         </div>
       )}
     </div>

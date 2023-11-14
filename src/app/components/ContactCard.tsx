@@ -3,10 +3,10 @@
 import * as AlertDialog from '@radix-ui/react-alert-dialog'
 import { PenSquare, Trash } from 'lucide-react'
 import Modal from './UI/Modal/index'
-import { IContacts } from '../(routes)/(home)/page'
+import { IContact } from '../context/ContactsContext'
 
 interface ContactProps {
-  contact: IContacts
+  contact: IContact
   deleteContact: (id: unknown) => void
 }
 
@@ -29,7 +29,7 @@ export default function ContactCard({ contact, deleteContact }: ContactProps) {
       </div>
 
       <div className="flex h-auto flex-row items-center gap-2">
-        <a href="/edit" className="mt-1.5 outline-none">
+        <a href={`/edit/${contact.id}`} className="mt-1.5 outline-none">
           <button className="focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
             <PenSquare className="text-primary-500" />
           </button>
