@@ -1,13 +1,6 @@
 'use client'
 
-import {
-  ChangeEvent,
-  Dispatch,
-  ReactNode,
-  SetStateAction,
-  useEffect,
-  useState,
-} from 'react'
+import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react'
 
 import { createContext } from 'use-context-selector'
 
@@ -35,7 +28,7 @@ interface ContactContextType {
   filteredContacts: IContact[]
   searchTerm: string
   handleRegisterNewContact: (data: CreateContactProps) => Promise<void>
-  // handleInput: (event: ChangeEvent<HTMLInputElement>) => void
+  loading: boolean
 }
 
 interface ContactsProvideProps {
@@ -48,14 +41,19 @@ export function ContactsProvider({ children }: ContactsProvideProps) {
   const [contacts, setContacts] = useState<IContact[]>([])
   const [orderBy, setOrderBy] = useState('asc')
   const [searchTerm, setSearchTerm] = useState('')
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    setLoading(true)
+
     fetch(`http://localhost:3001/contacts?orderBy=${orderBy}`)
       .then(async (response) => {
         const json = await response.json()
         setContacts(json)
+        setLoading(false)
       })
       .catch((error) => {
+        setLoading(false)
         console.log('erro', error)
       })
   }, [orderBy])
@@ -119,7 +117,7 @@ export function ContactsProvider({ children }: ContactsProvideProps) {
         filteredContacts,
         searchTerm,
         handleRegisterNewContact,
-        // handleInput,
+        loading,
       }}
     >
       {children}
