@@ -8,16 +8,10 @@ import { Input } from './Input'
 import { RegisterData, RegisterValidationSchema } from '../utils/schema'
 import { formatPhone } from '../utils/formatPhone'
 import { useEffect } from 'react'
-import { useContextSelector } from 'use-context-selector'
-import { ContactsContext } from '../context/ContactsContext'
+import { useContact } from '../hooks/useContact'
 
 export default function RegisterForm() {
-  const handleRegisterNewContact = useContextSelector(
-    ContactsContext,
-    (context) => {
-      return context.handleRegisterNewContact
-    },
-  )
+  const { handleRegisterNewContact } = useContact()
 
   const {
     register,

@@ -2,12 +2,9 @@
 
 import { ArrowLeft } from 'lucide-react'
 import EditForm from '@/app/components/EditForm'
-import {
-  ContactsContext,
-  CreateContactProps,
-} from '@/app/context/ContactsContext'
-import { useContextSelector } from 'use-context-selector'
+import { CreateContactProps } from '@/app/context/ContactsContext'
 import { useRouter } from 'next/navigation'
+import { useContact } from '@/app/hooks/useContact'
 
 interface ContactProps {
   params: {
@@ -16,15 +13,13 @@ interface ContactProps {
 }
 
 export default function Edit({ params }: ContactProps) {
-  const contacts = useContextSelector(ContactsContext, (context) => {
-    return context.contacts
-  })
-
-  const router = useRouter()
+  const { contacts } = useContact()
 
   const filteredEditContacts = contacts.find(
     (contact) => contact.id === params.slug,
   )
+
+  const router = useRouter()
 
   async function handleEditContact(data: CreateContactProps) {
     fetch(`http://localhost:3001/contacts/${params.slug}`, {

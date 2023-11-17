@@ -99,13 +99,6 @@ export function ContactsProvider({ children }: ContactsProvideProps) {
     ({ name }) => name?.includes(searchTerm),
   )
 
-  // const handleInput = (event: ChangeEvent<HTMLInputElement>) => {
-  //   setContacts({
-  //     ...contacts,
-  //     [event.target.name]: event.target.value,
-  //   })
-  // }
-
   return (
     <ContactsContext.Provider
       value={{
