@@ -41,23 +41,24 @@ export default function RegisterForm() {
     >
       <div className="mb-6 flex flex-col gap-4">
         <Input
+          className="w-full rounded border bg-white p-4 shadow-md outline-none placeholder:text-zinc-400 focus-within:border focus-within:border-primary-500 focus-within:border-opacity-100"
           type="text"
           placeholder="Nome"
-          className="w-full rounded border border-transparent bg-white p-4 shadow-md outline-none placeholder:text-zinc-400 focus-within:border focus-within:border-primary-500 focus-within:border-opacity-100"
           {...register('name')}
           error={errors.name?.message}
         />
 
         <Input
+          className="w-full rounded border bg-white p-4 shadow-md outline-none placeholder:text-zinc-400 focus-within:border focus-within:border-primary-500 focus-within:border-opacity-100"
           type="email"
           placeholder="E-mail"
-          className="w-full rounded border border-transparent bg-white p-4 shadow-md outline-none placeholder:text-zinc-400 focus-within:border focus-within:border-primary-500 focus-within:border-opacity-100"
           {...register('email')}
           error={errors.email?.message}
         />
 
         <Input
-          className="w-full rounded border border-transparent bg-white p-4 shadow-md outline-none placeholder:text-zinc-400 focus-within:border focus-within:border-primary-500 focus-within:border-opacity-100"
+          className="w-full rounded border bg-white p-4 shadow-md outline-none placeholder:text-zinc-400 focus-within:border focus-within:border-primary-500 focus-within:border-opacity-100"
+          type="phone"
           placeholder="Telefone"
           {...register('phone')}
           error={errors.phone?.message}

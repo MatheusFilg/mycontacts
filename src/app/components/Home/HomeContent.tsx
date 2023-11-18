@@ -3,9 +3,9 @@
 import ContactCard from '@/app/components/ContactCard'
 import EmptyContacts from '@/app/components/EmptyContacts'
 import { MoveUp, MoveDown } from 'lucide-react'
-import Header from './HomeHeader'
 import { useContact } from '@/app/hooks/useContact'
 import ContactNotFound from '../ContactNotFound'
+import HomeHeader from './HomeHeader'
 
 export default function HomeContent() {
   const {
@@ -27,7 +27,7 @@ export default function HomeContent() {
         <ContactNotFound />
       ) : (
         <div className="flex w-[500px] flex-col items-center">
-          <Header />
+          <HomeHeader />
           <div className="flex w-full flex-col items-start">
             <button
               onClick={handleOrderContacts}

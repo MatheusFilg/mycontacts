@@ -1,7 +1,7 @@
 import { useContact } from '@/app/hooks/useContact'
 import { ChangeEvent } from 'react'
 
-export default function Header() {
+export default function HomeHeader() {
   const { searchTerm, setSearchTerm, filteredContacts } = useContact()
 
   function handleSearchContact(event: ChangeEvent<HTMLInputElement>) {
