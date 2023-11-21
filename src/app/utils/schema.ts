@@ -21,6 +21,7 @@ export const RegisterValidationSchema = z.object({
   category_id: z.string({
     required_error: 'A escolha do Contato é obrigatória',
   }),
+  category_name: z.string().optional(),
 })
 
 export type RegisterData = z.infer<typeof RegisterValidationSchema>

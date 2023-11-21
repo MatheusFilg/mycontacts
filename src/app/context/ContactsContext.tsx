@@ -11,6 +11,7 @@ export interface IContact {
   email: string
   phone: string
   category_id: string
+  category_name?: string
 }
 
 export interface CreateContactProps {
@@ -18,6 +19,7 @@ export interface CreateContactProps {
   email: string
   phone: string
   category_id: string
+  category_name?: string
 }
 
 interface ContactContextType {
