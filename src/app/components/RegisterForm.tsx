@@ -9,9 +9,11 @@ import { RegisterData, RegisterValidationSchema } from '../utils/schema'
 import { formatPhone } from '../utils/formatPhone'
 import { useEffect } from 'react'
 import { useContact } from '../hooks/useContact'
+import { useCategory } from '../hooks/useCategory'
 
 export default function RegisterForm() {
   const { handleRegisterNewContact } = useContact()
+  const { loadCategories, categories } = useCategory()
 
   const {
     register,
@@ -19,7 +21,7 @@ export default function RegisterForm() {
     handleSubmit,
     watch,
     setValue,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<RegisterData>({
     resolver: zodResolver(RegisterValidationSchema),
     mode: 'onChange',
@@ -32,6 +34,10 @@ export default function RegisterForm() {
   useEffect(() => {
     setValue('phone', formatPhone(phoneValue))
   }, [phoneValue, setValue])
+
+  useEffect(() => {
+    loadCategories()
+  })
 
   return (
     <form
@@ -61,11 +67,12 @@ export default function RegisterForm() {
           type="phone"
           placeholder="Telefone"
           {...register('phone')}
+          maxLength={15}
           error={errors.phone?.message}
         />
 
         <Controller
-          name="category"
+          name="category_id"
           control={control}
           render={({ field }) => (
             <Select
@@ -75,15 +82,22 @@ export default function RegisterForm() {
                 return field.onChange(value)
               }}
             >
-              <SelectItem value="instagram" text="Instagram" />
-              <SelectItem value="linkedin" text="Linkedin" />
-              <SelectItem value="whatsapp" text="Whatsapp" />
+              {categories.map((category) => (
+                <SelectItem
+                  key={category.id}
+                  value={category.id}
+                  text={category.name}
+                />
+              ))}
             </Select>
           )}
         />
       </div>
 
-      <button className="w-full rounded bg-primary-500 p-4 px-4 py-2 text-lg font-bold text-white shadow-md outline-none focus-visible:shadow-lg focus-visible:shadow-primary-500 disabled:cursor-not-allowed disabled:bg-zinc-400">
+      <button
+        disabled={!isValid}
+        className="w-full rounded bg-primary-500 p-4 px-4 py-2 text-lg font-bold text-white shadow-md outline-none focus-visible:shadow-lg focus-visible:shadow-primary-500 disabled:cursor-not-allowed disabled:bg-zinc-400"
+      >
         Cadastrar
       </button>
     </form>

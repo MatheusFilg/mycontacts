@@ -7,6 +7,8 @@ import { SelectItem } from './UI/Select/SelectItem'
 import { Input } from './Input'
 import { RegisterData, RegisterValidationSchema } from '../utils/schema'
 import { CreateContactProps, IContact } from '../context/ContactsContext'
+import { useEffect } from 'react'
+import { useCategory } from '../hooks/useCategory'
 
 interface ContactProps {
   contactInfo: IContact | undefined
@@ -14,15 +16,21 @@ interface ContactProps {
 }
 
 export default function EditForm({ contactInfo, editContact }: ContactProps) {
+  const { loadCategories, categories } = useCategory()
+
   const {
     register,
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid, isDirty },
   } = useForm<RegisterData>({
     resolver: zodResolver(RegisterValidationSchema),
     mode: 'onChange',
     reValidateMode: 'onChange',
+  })
+
+  useEffect(() => {
+    loadCategories()
   })
 
   return (
@@ -55,12 +63,14 @@ export default function EditForm({ contactInfo, editContact }: ContactProps) {
           type="phone"
           placeholder="Telefone"
           {...register('phone')}
+          max={15}
           defaultValue={contactInfo?.phone}
           error={errors.phone?.message}
         />
 
         <Controller
-          name="category"
+          name="category_id"
+          defaultValue={contactInfo?.category_id}
           control={control}
           render={({ field }) => (
             <Select
@@ -70,15 +80,22 @@ export default function EditForm({ contactInfo, editContact }: ContactProps) {
                 return field.onChange(value)
               }}
             >
-              <SelectItem value="instagram" text="Instagram" />
-              <SelectItem value="linkedin" text="Linkedin" />
-              <SelectItem value="whatsapp" text="Whatsapp" />
+              {categories.map((category) => (
+                <SelectItem
+                  key={category.id}
+                  value={category.id}
+                  text={category.name}
+                />
+              ))}
             </Select>
           )}
         />
       </div>
 
-      <button className="w-full rounded bg-primary-500 p-4 px-4 py-2 text-lg font-bold text-white shadow-md outline-none focus-visible:shadow-lg focus-visible:shadow-primary-500 disabled:cursor-not-allowed disabled:bg-zinc-400">
+      <button
+        disabled={!isValid || !isDirty}
+        className="w-full rounded bg-primary-500 p-4 px-4 py-2 text-lg font-bold text-white shadow-md outline-none focus-visible:shadow-lg focus-visible:shadow-primary-500 disabled:cursor-not-allowed disabled:bg-zinc-400"
+      >
         Editar Cadastro
       </button>
     </form>

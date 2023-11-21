@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Sora } from 'next/font/google'
 import { Logo } from './components/Logo'
 import { ContactsProvider } from './context/ContactsContext'
+import { CategoriesProvider } from './context/CategoriesContext'
 
 const sora = Sora({ subsets: ['latin'], variable: '--font-sora' })
 
@@ -20,10 +21,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={sora.className}>
         <main className="flex min-h-screen flex-col items-center bg-primary-100 px-96 py-16 font-sora">
-          <ContactsProvider>
-            <Logo />
-            {children}
-          </ContactsProvider>
+          <CategoriesProvider>
+            <ContactsProvider>
+              <Logo />
+              {children}
+            </ContactsProvider>
+          </CategoriesProvider>
         </main>
       </body>
     </html>

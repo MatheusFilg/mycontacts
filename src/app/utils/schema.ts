@@ -1,11 +1,5 @@
 import * as z from 'zod'
 
-export enum CategoryContact {
-  instagram = 'instagram',
-  whatsapp = 'whatsapp',
-  linkedin = 'linkedin',
-}
-
 export const RegisterValidationSchema = z.object({
   name: z
     .string({
@@ -23,12 +17,9 @@ export const RegisterValidationSchema = z.object({
     .string({
       required_error: 'O número do contato é obrigatório',
     })
-    .min(15, { message: 'Mínimo de caracteres necessário' })
-    .max(15, { message: 'Limite de caracteres atingido' }),
-  category: z.nativeEnum(CategoryContact, {
-    errorMap: () => {
-      return { message: 'Informe a categoria do Contato' }
-    },
+    .min(15, { message: 'Mínimo de caracteres necessário' }),
+  category_id: z.string({
+    required_error: 'A escolha do Contato é obrigatória',
   }),
 })
 

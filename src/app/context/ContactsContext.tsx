@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 'use client'
 
 import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react'
@@ -9,14 +10,14 @@ export interface IContact {
   name: string
   email: string
   phone: string
-  category_name: string
+  category_id: string
 }
 
 export interface CreateContactProps {
   name: string
   email: string
   phone: string
-  category: 'instagram' | 'whatsapp' | 'linkedin'
+  category_id: string
 }
 
 interface ContactContextType {
@@ -29,6 +30,7 @@ interface ContactContextType {
   searchTerm: string
   handleRegisterNewContact: (data: CreateContactProps) => Promise<void>
   loading: boolean
+  setContacts: Dispatch<SetStateAction<IContact[]>>
 }
 
 interface ContactsProvideProps {
@@ -59,15 +61,16 @@ export function ContactsProvider({ children }: ContactsProvideProps) {
   }, [orderBy])
 
   async function handleRegisterNewContact(data: CreateContactProps) {
-    const { name, phone, email } = data
+    const { name, phone, email, category_id } = data
 
-    if (name && phone && email) {
+    if (name && phone && email && category_id) {
       fetch('http://localhost:3001/contacts', {
         method: 'POST',
         body: JSON.stringify({
           name,
           email,
           phone,
+          category_id,
         }),
         headers: {
           'Content-type': 'application/json; charset=UTF-8',
@@ -78,6 +81,7 @@ export function ContactsProvider({ children }: ContactsProvideProps) {
           setContacts([...contacts, data])
         })
     }
+    console.log(setContacts)
     window.location.href = 'http://localhost:3000/'
   }
 
@@ -111,6 +115,7 @@ export function ContactsProvider({ children }: ContactsProvideProps) {
         searchTerm,
         handleRegisterNewContact,
         loading,
+        setContacts,
       }}
     >
       {children}
