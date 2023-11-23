@@ -29,7 +29,6 @@ export default function RegisterForm() {
     defaultValues: { phone: '' },
   })
 
-  // input mask do input de phone
   const phoneValue = watch('phone')
   useEffect(() => {
     setValue('phone', formatPhone(phoneValue))

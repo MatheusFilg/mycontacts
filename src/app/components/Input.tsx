@@ -4,7 +4,6 @@ type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   error?: string
 }
 
-// eslint-disable-next-line react/display-name
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ error, className, ...props }, ref) => {
     return (
@@ -28,3 +27,4 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     )
   },
 )
+Input.displayName = 'Input'

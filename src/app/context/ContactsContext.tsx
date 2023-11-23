@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 'use client'
 
 import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react'
@@ -25,14 +24,14 @@ export interface CreateContactProps {
 interface ContactContextType {
   contacts: IContact[]
   orderBy: string
+  searchTerm: string
+  loading: boolean
+  setSearchTerm: Dispatch<SetStateAction<string>>
+  setContacts: Dispatch<SetStateAction<IContact[]>>
+  filteredContacts: IContact[]
   handleOrderContacts: () => void
   handleDeleteContact: (id: unknown) => void
-  setSearchTerm: Dispatch<SetStateAction<string>>
-  filteredContacts: IContact[]
-  searchTerm: string
   handleRegisterNewContact: (data: CreateContactProps) => Promise<void>
-  loading: boolean
-  setContacts: Dispatch<SetStateAction<IContact[]>>
 }
 
 interface ContactsProvideProps {
@@ -46,6 +45,10 @@ export function ContactsProvider({ children }: ContactsProvideProps) {
   const [orderBy, setOrderBy] = useState('asc')
   const [searchTerm, setSearchTerm] = useState('')
   const [loading, setLoading] = useState(true)
+
+  const filteredContacts = contacts.filter(
+    ({ name }) => name?.includes(searchTerm),
+  )
 
   useEffect(() => {
     setLoading(true)
@@ -83,7 +86,6 @@ export function ContactsProvider({ children }: ContactsProvideProps) {
           setContacts([...contacts, data])
         })
     }
-    console.log(setContacts)
     window.location.href = 'http://localhost:3000/'
   }
 
@@ -101,23 +103,19 @@ export function ContactsProvider({ children }: ContactsProvideProps) {
     setOrderBy((orderBy) => (orderBy === 'asc' ? 'desc' : 'asc'))
   }
 
-  const filteredContacts = contacts.filter(
-    ({ name }) => name?.includes(searchTerm),
-  )
-
   return (
     <ContactsContext.Provider
       value={{
         contacts,
-        handleOrderContacts,
         orderBy,
-        handleDeleteContact,
-        setSearchTerm,
-        filteredContacts,
         searchTerm,
-        handleRegisterNewContact,
         loading,
+        setSearchTerm,
         setContacts,
+        filteredContacts,
+        handleOrderContacts,
+        handleDeleteContact,
+        handleRegisterNewContact,
       }}
     >
       {children}

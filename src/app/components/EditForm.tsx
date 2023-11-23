@@ -11,11 +11,14 @@ import { useEffect } from 'react'
 import { useCategory } from '../hooks/useCategory'
 
 interface ContactProps {
-  contactInfo: IContact | undefined
-  editContact: (data: CreateContactProps) => void
+  filteredEditContact: IContact | undefined
+  handleEditContact: (data: CreateContactProps) => void
 }
 
-export default function EditForm({ contactInfo, editContact }: ContactProps) {
+export default function EditForm({
+  filteredEditContact,
+  handleEditContact,
+}: ContactProps) {
   const { loadCategories, categories } = useCategory()
 
   const {
@@ -36,7 +39,7 @@ export default function EditForm({ contactInfo, editContact }: ContactProps) {
   return (
     <form
       className="flex w-full flex-col"
-      onSubmit={handleSubmit(editContact)}
+      onSubmit={handleSubmit(handleEditContact)}
       noValidate
     >
       <div className="mb-6 flex flex-col gap-4">
@@ -45,7 +48,7 @@ export default function EditForm({ contactInfo, editContact }: ContactProps) {
           type="text"
           placeholder="Nome"
           {...register('name')}
-          defaultValue={contactInfo?.name}
+          defaultValue={filteredEditContact?.name}
           error={errors.name?.message}
         />
 
@@ -54,7 +57,7 @@ export default function EditForm({ contactInfo, editContact }: ContactProps) {
           type="email"
           placeholder="E-mail"
           {...register('email')}
-          defaultValue={contactInfo?.email}
+          defaultValue={filteredEditContact?.email}
           error={errors.email?.message}
         />
 
@@ -64,13 +67,13 @@ export default function EditForm({ contactInfo, editContact }: ContactProps) {
           placeholder="Telefone"
           {...register('phone')}
           max={15}
-          defaultValue={contactInfo?.phone}
+          defaultValue={filteredEditContact?.phone}
           error={errors.phone?.message}
         />
 
         <Controller
           name="category_id"
-          defaultValue={contactInfo?.category_id}
+          defaultValue={filteredEditContact?.category_id}
           control={control}
           render={({ field }) => (
             <Select

@@ -16,7 +16,7 @@ interface ContactProps {
 export default function Edit({ params }: ContactProps) {
   const { contacts, loading } = useContact()
 
-  const filteredEditContacts = contacts.find(
+  const filteredEditContact = contacts.find(
     (contact) => contact.id === params.slug,
   )
 
@@ -51,12 +51,12 @@ export default function Edit({ params }: ContactProps) {
           </a>
 
           <h1 className="mb-6 text-2xl font-bold">
-            Editar {filteredEditContacts?.name}
+            Editar {filteredEditContact?.name}
           </h1>
 
           <EditForm
-            contactInfo={filteredEditContacts}
-            editContact={handleEditContact}
+            filteredEditContact={filteredEditContact}
+            handleEditContact={handleEditContact}
           />
         </div>
       )}
