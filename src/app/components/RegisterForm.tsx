@@ -13,7 +13,7 @@ import { useCategory } from '../hooks/useCategory'
 
 export default function RegisterForm() {
   const { handleRegisterNewContact } = useContact()
-  const { loadCategories, categories } = useCategory()
+  const { categories } = useCategory()
 
   const {
     register,
@@ -34,10 +34,6 @@ export default function RegisterForm() {
     setValue('phone', formatPhone(phoneValue))
   }, [phoneValue, setValue])
 
-  useEffect(() => {
-    loadCategories()
-  })
-
   return (
     <form
       className="flex w-full flex-col"
@@ -46,7 +42,7 @@ export default function RegisterForm() {
     >
       <div className="mb-6 flex flex-col gap-4">
         <Input
-          className="w-full rounded border bg-white p-4 shadow-md outline-none placeholder:text-zinc-400 focus-within:border focus-within:border-primary-500 focus-within:border-opacity-100"
+          className="bgz w-full rounded border bg-white p-4 shadow-md outline-none placeholder:text-zinc-400 focus-within:border focus-within:border-primary-500 focus-within:border-opacity-100"
           type="text"
           placeholder="Nome"
           {...register('name')}

@@ -7,7 +7,6 @@ import { SelectItem } from './UI/Select/SelectItem'
 import { Input } from './Input'
 import { RegisterData, RegisterValidationSchema } from '../utils/schema'
 import { CreateContactProps, IContact } from '../context/ContactsContext'
-import { useEffect } from 'react'
 import { useCategory } from '../hooks/useCategory'
 
 interface ContactProps {
@@ -19,7 +18,7 @@ export default function EditForm({
   filteredEditContact,
   handleEditContact,
 }: ContactProps) {
-  const { loadCategories, categories } = useCategory()
+  const { categories } = useCategory()
 
   const {
     register,
@@ -30,10 +29,6 @@ export default function EditForm({
     resolver: zodResolver(RegisterValidationSchema),
     mode: 'onChange',
     reValidateMode: 'onChange',
-  })
-
-  useEffect(() => {
-    loadCategories()
   })
 
   return (

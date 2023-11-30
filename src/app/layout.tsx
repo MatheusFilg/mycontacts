@@ -4,6 +4,8 @@ import { Sora } from 'next/font/google'
 import { Logo } from './components/Logo'
 import { ContactsProvider } from './context/ContactsContext'
 import { CategoriesProvider } from './context/CategoriesContext'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const sora = Sora({ subsets: ['latin'], variable: '--font-sora' })
 
@@ -21,6 +23,18 @@ export default function RootLayout({
     <html lang="en">
       <body className={sora.className}>
         <main className="flex min-h-screen flex-col items-center bg-primary-100 px-96 py-16 font-sora">
+          <ToastContainer
+            position="bottom-center"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
           <CategoriesProvider>
             <ContactsProvider>
               <Logo />

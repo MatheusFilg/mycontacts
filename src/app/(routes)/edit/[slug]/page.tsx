@@ -6,6 +6,7 @@ import { CreateContactProps } from '@/app/context/ContactsContext'
 import { useRouter } from 'next/navigation'
 import { useContact } from '@/app/hooks/useContact'
 import LoadingForm from '@/app/components/LoadingForm'
+import { toast } from 'react-toastify'
 
 interface ContactProps {
   params: {
@@ -23,18 +24,49 @@ export default function Edit({ params }: ContactProps) {
   const router = useRouter()
 
   async function handleEditContact(data: CreateContactProps) {
-    fetch(`http://localhost:3001/contacts/${params.slug}`, {
-      method: 'PUT',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-    }).then((response) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/contacts/${params.slug}`,
+        {
+          method: 'PUT',
+          body: JSON.stringify(data),
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+          },
+        },
+      )
+
+      if (response.status === 400) {
+        return toast.error('Nenhuma alteração feita')
+      }
+      toast.success('Cadastro Editado com Sucesso')
       router.refresh()
-      return response.json()
-    })
-    window.location.href = 'http://localhost:3000/'
+      await response.json()
+      setTimeout(() => {
+        window.location.href = 'http://localhost:3000/'
+      }, 2500)
+    } catch (error: any) {
+      if (error.status === 400) {
+        return toast.error('Nenhuma alteração feita')
+      } else {
+        return toast.warning('Erro interno do Servidor')
+      }
+    }
   }
+
+  // async function handleEditContact(data: CreateContactProps) {
+  //   fetch(`http://localhost:3001/contacts/${params.slug}`, {
+  //     method: 'PUT',
+  //     body: JSON.stringify(data),
+  //     headers: {
+  //       'Content-type': 'application/json; charset=UTF-8',
+  //     },
+  //   }).then((response) => {
+  //     router.refresh()
+  //     return response.json()
+  //   })
+  //   window.location.href = 'http://localhost:3000/'
+  // }
 
   return (
     <div>

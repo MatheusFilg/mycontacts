@@ -1,6 +1,6 @@
 'use client'
 
-import { ReactNode, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { createContext } from 'use-context-selector'
 
 interface ICategory {
@@ -10,7 +10,6 @@ interface ICategory {
 
 interface CategoryContextType {
   categories: ICategory[]
-  loadCategories: () => void
 }
 
 interface CategoriesProvideProps {
@@ -22,7 +21,7 @@ export const CategoriesContext = createContext({} as CategoryContextType)
 export function CategoriesProvider({ children }: CategoriesProvideProps) {
   const [categories, setCategories] = useState<ICategory[]>([])
 
-  function loadCategories() {
+  useEffect(() => {
     fetch('http://localhost:3001/categories')
       .then(async (response) => {
         const json = await response.json()
@@ -31,10 +30,10 @@ export function CategoriesProvider({ children }: CategoriesProvideProps) {
       .catch((error) => {
         console.log('erro', error)
       })
-  }
+  }, [])
 
   return (
-    <CategoriesContext.Provider value={{ categories, loadCategories }}>
+    <CategoriesContext.Provider value={{ categories }}>
       {children}
     </CategoriesContext.Provider>
   )

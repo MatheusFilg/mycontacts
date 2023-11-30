@@ -1,6 +1,7 @@
 'use client'
 
 import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react'
+import { Id, toast } from 'react-toastify'
 
 import { createContext } from 'use-context-selector'
 
@@ -31,7 +32,9 @@ interface ContactContextType {
   filteredContacts: IContact[]
   handleOrderContacts: () => void
   handleDeleteContact: (id: unknown) => void
-  handleRegisterNewContact: (data: CreateContactProps) => Promise<void>
+  handleRegisterNewContact: (
+    data: CreateContactProps,
+  ) => Promise<Id | undefined>
 }
 
 interface ContactsProvideProps {
@@ -68,25 +71,40 @@ export function ContactsProvider({ children }: ContactsProvideProps) {
   async function handleRegisterNewContact(data: CreateContactProps) {
     const { name, phone, email, category_id } = data
 
-    if (name && phone && email && category_id) {
-      fetch('http://localhost:3001/contacts', {
-        method: 'POST',
-        body: JSON.stringify({
-          name,
-          email,
-          phone,
-          category_id,
-        }),
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          setContacts([...contacts, data])
+    if (data) {
+      try {
+        const response = await fetch('http://localhost:3001/contacts', {
+          method: 'POST',
+          body: JSON.stringify({
+            name,
+            email,
+            phone,
+            category_id,
+          }),
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+          },
         })
+
+        if (response.status === 400) {
+          return toast.error('Email já Cadastrado')
+        }
+
+        const data = await response.json()
+
+        toast.success('Cadastro registrado com sucesso')
+        setContacts([...contacts, data])
+        setTimeout(() => {
+          window.location.href = 'http://localhost:3000/'
+        }, 2500)
+      } catch (error: any) {
+        if (error.status === 400) {
+          return toast.error('Email já Cadastrado')
+        } else {
+          return toast.warning('Erro interno do Servidor')
+        }
+      }
     }
-    window.location.href = 'http://localhost:3000/'
   }
 
   function handleDeleteContact(id: unknown) {
@@ -96,6 +114,7 @@ export function ContactsProvider({ children }: ContactsProvideProps) {
       setContacts((contacts) => {
         return contacts.filter((item) => item.id !== id)
       })
+      toast.success('Cadastro Deletado com Sucesso')
     })
   }
 
