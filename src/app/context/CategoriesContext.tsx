@@ -2,6 +2,7 @@
 
 import { ReactNode, useEffect, useState } from 'react'
 import { createContext } from 'use-context-selector'
+import { URL } from './ContactsContext'
 
 interface ICategory {
   name: string
@@ -22,7 +23,7 @@ export function CategoriesProvider({ children }: CategoriesProvideProps) {
   const [categories, setCategories] = useState<ICategory[]>([])
 
   useEffect(() => {
-    fetch('http://localhost:3001/categories')
+    fetch(`${URL}/categories`)
       .then(async (response) => {
         const json = await response.json()
         setCategories(json)

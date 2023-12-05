@@ -2,7 +2,7 @@
 
 import { ArrowLeft } from 'lucide-react'
 import EditForm from '@/app/components/EditForm'
-import { CreateContactProps } from '@/app/context/ContactsContext'
+import { CreateContactProps, URL } from '@/app/context/ContactsContext'
 import { useRouter } from 'next/navigation'
 import { useContact } from '@/app/hooks/useContact'
 import LoadingForm from '@/app/components/LoadingForm'
@@ -25,26 +25,21 @@ export default function Edit({ params }: ContactProps) {
 
   async function handleEditContact(data: CreateContactProps) {
     try {
-      const response = await fetch(
-        `http://localhost:3001/contacts/${params.slug}`,
-        {
-          method: 'PUT',
-          body: JSON.stringify(data),
-          headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-          },
+      const response = await fetch(`${URL}/contacts/${params.slug}`, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
         },
-      )
+      })
 
       if (response.status === 400) {
         return toast.error('Nenhuma alteração feita')
       }
-      toast.success('Cadastro Editado com Sucesso')
+      toast.success('Cadastro editado com sucesso')
       router.refresh()
       await response.json()
-      setTimeout(() => {
-        window.location.href = 'http://localhost:3000/'
-      }, 2500)
+      window.location.href = '/'
     } catch (error: any) {
       if (error.status === 400) {
         return toast.error('Nenhuma alteração feita')
@@ -53,20 +48,6 @@ export default function Edit({ params }: ContactProps) {
       }
     }
   }
-
-  // async function handleEditContact(data: CreateContactProps) {
-  //   fetch(`http://localhost:3001/contacts/${params.slug}`, {
-  //     method: 'PUT',
-  //     body: JSON.stringify(data),
-  //     headers: {
-  //       'Content-type': 'application/json; charset=UTF-8',
-  //     },
-  //   }).then((response) => {
-  //     router.refresh()
-  //     return response.json()
-  //   })
-  //   window.location.href = 'http://localhost:3000/'
-  // }
 
   return (
     <div>

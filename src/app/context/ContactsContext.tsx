@@ -43,6 +43,8 @@ interface ContactsProvideProps {
 
 export const ContactsContext = createContext({} as ContactContextType)
 
+export const URL = process.env.BASE_URL || 'http://localhost:3001'
+
 export function ContactsProvider({ children }: ContactsProvideProps) {
   const [contacts, setContacts] = useState<IContact[]>([])
   const [orderBy, setOrderBy] = useState('asc')
@@ -56,7 +58,7 @@ export function ContactsProvider({ children }: ContactsProvideProps) {
   useEffect(() => {
     setLoading(true)
 
-    fetch(`http://localhost:3001/contacts?orderBy=${orderBy}`)
+    fetch(`${URL}/contacts?orderBy=${orderBy}`)
       .then(async (response) => {
         const json = await response.json()
         setContacts(json)
@@ -73,7 +75,7 @@ export function ContactsProvider({ children }: ContactsProvideProps) {
 
     if (data) {
       try {
-        const response = await fetch('http://localhost:3001/contacts', {
+        const response = await fetch(`${URL}/contacts`, {
           method: 'POST',
           body: JSON.stringify({
             name,
@@ -94,9 +96,7 @@ export function ContactsProvider({ children }: ContactsProvideProps) {
 
         toast.success('Cadastro registrado com sucesso')
         setContacts([...contacts, data])
-        setTimeout(() => {
-          window.location.href = 'http://localhost:3000/'
-        }, 2500)
+        window.location.href = '/'
       } catch (error: any) {
         if (error.status === 400) {
           return toast.error('Email já Cadastrado')
@@ -108,7 +108,7 @@ export function ContactsProvider({ children }: ContactsProvideProps) {
   }
 
   function handleDeleteContact(id: unknown) {
-    fetch(`http://localhost:3001/contacts/${id}`, {
+    fetch(`${URL}/contacts/${id}`, {
       method: 'DELETE',
     }).then(() => {
       setContacts((contacts) => {
