@@ -39,7 +39,7 @@ export default function Edit({ params }: ContactProps) {
       if (response.status === 400) {
         return toast.error('Nenhuma alteração feita')
       }
-      toast.success('Cadastro Editado com Sucesso')
+      toast.success('Cadastro editado com sucesso')
       router.refresh()
       await response.json()
       setTimeout(() => {
@@ -53,20 +53,6 @@ export default function Edit({ params }: ContactProps) {
       }
     }
   }
-
-  // async function handleEditContact(data: CreateContactProps) {
-  //   fetch(`http://localhost:3001/contacts/${params.slug}`, {
-  //     method: 'PUT',
-  //     body: JSON.stringify(data),
-  //     headers: {
-  //       'Content-type': 'application/json; charset=UTF-8',
-  //     },
-  //   }).then((response) => {
-  //     router.refresh()
-  //     return response.json()
-  //   })
-  //   window.location.href = 'http://localhost:3000/'
-  // }
 
   return (
     <div>
