@@ -43,8 +43,6 @@ interface ContactsProvideProps {
 
 export const ContactsContext = createContext({} as ContactContextType)
 
-export const URL = process.env.BASE_URL || 'http://localhost:3001'
-
 export function ContactsProvider({ children }: ContactsProvideProps) {
   const [contacts, setContacts] = useState<IContact[]>([])
   const [orderBy, setOrderBy] = useState('asc')
@@ -75,7 +73,7 @@ export function ContactsProvider({ children }: ContactsProvideProps) {
 
     if (data) {
       try {
-        const response = await fetch(`${URL}/contacts`, {
+        const response = await fetch(`${process.env.BASE_URL}/contacts`, {
           method: 'POST',
           body: JSON.stringify({
             name,
@@ -108,7 +106,7 @@ export function ContactsProvider({ children }: ContactsProvideProps) {
   }
 
   function handleDeleteContact(id: unknown) {
-    fetch(`${URL}/contacts/${id}`, {
+    fetch(`${process.env.BASE_URL}/contacts/${id}`, {
       method: 'DELETE',
     }).then(() => {
       setContacts((contacts) => {

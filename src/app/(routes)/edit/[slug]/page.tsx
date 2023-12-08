@@ -2,7 +2,7 @@
 
 import { ArrowLeft } from 'lucide-react'
 import EditForm from '@/app/components/EditForm'
-import { CreateContactProps, URL } from '@/app/context/ContactsContext'
+import { CreateContactProps } from '@/app/context/ContactsContext'
 import { useRouter } from 'next/navigation'
 import { useContact } from '@/app/hooks/useContact'
 import LoadingForm from '@/app/components/LoadingForm'
@@ -25,13 +25,16 @@ export default function Edit({ params }: ContactProps) {
 
   async function handleEditContact(data: CreateContactProps) {
     try {
-      const response = await fetch(`${URL}/contacts/${params.slug}`, {
-        method: 'PUT',
-        body: JSON.stringify(data),
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
+      const response = await fetch(
+        `${process.env.BASE_URL}/contacts/${params.slug}`,
+        {
+          method: 'PUT',
+          body: JSON.stringify(data),
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+          },
         },
-      })
+      )
 
       if (response.status === 400) {
         return toast.error('Nenhuma alteração feita')
