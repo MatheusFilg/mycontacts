@@ -31,7 +31,7 @@ export function CategoriesProvider({ children }: CategoriesProvideProps) {
       .catch((error) => {
         console.log('erro', error)
       })
-  }, [])
+  }, [URL])
 
   return (
     <CategoriesContext.Provider value={{ categories }}>

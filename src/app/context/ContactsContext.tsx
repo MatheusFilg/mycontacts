@@ -68,7 +68,7 @@ export function ContactsProvider({ children }: ContactsProvideProps) {
         setLoading(false)
         console.log('erro', error)
       })
-  }, [orderBy])
+  }, [orderBy, URL])
 
   async function handleRegisterNewContact(data: CreateContactProps) {
     const { name, phone, email, category_id } = data
