@@ -53,10 +53,12 @@ export function ContactsProvider({ children }: ContactsProvideProps) {
     ({ name }) => name?.includes(searchTerm),
   )
 
+  const URL = 'http://localhost:3001' || process.env.BASE_URL
+
   useEffect(() => {
     setLoading(true)
 
-    fetch(`${process.env.BASE_URL}/contacts?orderBy=${orderBy}`)
+    fetch(`${URL}/contacts?orderBy=${orderBy}`)
       .then(async (response) => {
         const json = await response.json()
         setContacts(json)
@@ -73,7 +75,7 @@ export function ContactsProvider({ children }: ContactsProvideProps) {
 
     if (data) {
       try {
-        const response = await fetch(`${process.env.BASE_URL}/contacts`, {
+        const response = await fetch(`${URL}/contacts`, {
           method: 'POST',
           body: JSON.stringify({
             name,
@@ -106,7 +108,7 @@ export function ContactsProvider({ children }: ContactsProvideProps) {
   }
 
   function handleDeleteContact(id: unknown) {
-    fetch(`${process.env.BASE_URL}/contacts/${id}`, {
+    fetch(`${URL}/contacts/${id}`, {
       method: 'DELETE',
     }).then(() => {
       setContacts((contacts) => {

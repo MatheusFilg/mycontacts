@@ -20,9 +20,10 @@ export const CategoriesContext = createContext({} as CategoryContextType)
 
 export function CategoriesProvider({ children }: CategoriesProvideProps) {
   const [categories, setCategories] = useState<ICategory[]>([])
+  const URL = 'http://localhost:3001' || process.env.BASE_URL
 
   useEffect(() => {
-    fetch(`${process.env.BASE_URL}/categories`)
+    fetch(`${URL}/categories`)
       .then(async (response) => {
         const json = await response.json()
         setCategories(json)

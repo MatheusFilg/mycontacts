@@ -16,25 +16,21 @@ interface ContactProps {
 
 export default function Edit({ params }: ContactProps) {
   const { contacts, loading } = useContact()
-
   const filteredEditContact = contacts.find(
     (contact) => contact.id === params.slug,
   )
-
   const router = useRouter()
+  const URL = 'http://localhost:3001' || process.env.BASE_URL
 
   async function handleEditContact(data: CreateContactProps) {
     try {
-      const response = await fetch(
-        `${process.env.BASE_URL}/contacts/${params.slug}`,
-        {
-          method: 'PUT',
-          body: JSON.stringify(data),
-          headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-          },
+      const response = await fetch(`${URL}/contacts/${params.slug}`, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
         },
-      )
+      })
 
       if (response.status === 400) {
         return toast.error('Nenhuma alteração feita')
