@@ -58,7 +58,7 @@ export function ContactsProvider({ children }: ContactsProvideProps) {
   useEffect(() => {
     setLoading(true)
 
-    fetch(`${URL}/contacts?orderBy=${orderBy}`)
+    fetch(`${process.env.BASE_URL}/contacts?orderBy=${orderBy}`)
       .then(async (response) => {
         const json = await response.json()
         setContacts(json)
