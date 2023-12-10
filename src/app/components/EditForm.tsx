@@ -6,10 +6,8 @@ import { Select } from './UI/Select'
 import { SelectItem } from './UI/Select/SelectItem'
 import { Input } from './Input'
 import { RegisterData, RegisterValidationSchema } from '../utils/schema'
-import { formatPhone } from '../utils/formatPhone'
 import { CreateContactProps, IContact } from '../context/ContactsContext'
 import { useCategory } from '../hooks/useCategory'
-import { useEffect } from 'react'
 
 interface ContactProps {
   filteredEditContact: IContact | undefined
