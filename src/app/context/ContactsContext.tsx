@@ -56,7 +56,7 @@ export function ContactsProvider({ children }: ContactsProvideProps) {
   useEffect(() => {
     setLoading(true)
 
-    fetch(`${process.env.BASE_URL}/contacts?orderBy=${orderBy}`)
+    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/contacts?orderBy=${orderBy}`)
       .then(async (response) => {
         const json = await response.json()
         setContacts(json)
@@ -73,18 +73,21 @@ export function ContactsProvider({ children }: ContactsProvideProps) {
 
     if (data) {
       try {
-        const response = await fetch(`${process.env.BASE_URL}/contacts`, {
-          method: 'POST',
-          body: JSON.stringify({
-            name,
-            email,
-            phone,
-            category_id,
-          }),
-          headers: {
-            'Content-type': 'application/json; charset=UTF-8',
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/contacts`,
+          {
+            method: 'POST',
+            body: JSON.stringify({
+              name,
+              email,
+              phone,
+              category_id,
+            }),
+            headers: {
+              'Content-type': 'application/json; charset=UTF-8',
+            },
           },
-        })
+        )
 
         if (response.status === 400) {
           return toast.error('Email já Cadastrado')
@@ -106,7 +109,7 @@ export function ContactsProvider({ children }: ContactsProvideProps) {
   }
 
   function handleDeleteContact(id: unknown) {
-    fetch(`${process.env.BASE_URL}/contacts/${id}`, {
+    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/contacts/${id}`, {
       method: 'DELETE',
     }).then(() => {
       setContacts((contacts) => {

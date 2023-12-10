@@ -22,7 +22,7 @@ export function CategoriesProvider({ children }: CategoriesProvideProps) {
   const [categories, setCategories] = useState<ICategory[]>([])
 
   useEffect(() => {
-    fetch(`${process.env.BASE_URL}/categories`)
+    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/categories`)
       .then(async (response) => {
         const json = await response.json()
         setCategories(json)

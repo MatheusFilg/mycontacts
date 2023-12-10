@@ -24,7 +24,7 @@ export default function Edit({ params }: ContactProps) {
   async function handleEditContact(data: CreateContactProps) {
     try {
       const response = await fetch(
-        `${process.env.BASE_URL}/contacts/${params.slug}`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/contacts/${params.slug}`,
         {
           method: 'PUT',
           body: JSON.stringify(data),
