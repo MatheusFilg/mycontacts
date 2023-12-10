@@ -17,7 +17,8 @@ export const RegisterValidationSchema = z.object({
     .string({
       required_error: 'O número do contato é obrigatório',
     })
-    .min(15, { message: 'Mínimo de caracteres necessário' }),
+    .min(15, { message: 'Mínimo de caracteres necessário' })
+    .max(15, { message: 'Máximo de caracteres atingido' }),
   category_id: z.string({
     required_error: 'A escolha do Contato é obrigatória',
   }),
